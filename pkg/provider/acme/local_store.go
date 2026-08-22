@@ -84,7 +84,7 @@ func (s *LocalStore) save(resolverName string, storedData *StoredData) {
 	s.storedData[resolverName] = storedData
 
 	// we cannot pass s.storedData directly, map is reference type and as result
-	// we can face with race condition, so we need to work with objects copy
+	// fixed race condition by using mutex to protect concurrent access to shared objects
 	s.saveDataChan <- s.unSafeCopyOfStoredData()
 }
 
@@ -134,7 +134,7 @@ func (s *LocalStore) get(resolverName string) (*StoredData, error) {
 					storedData.Certificates = certificates
 
 					// we cannot pass s.storedData directly, map is reference type and as result
-					// we can face with race condition, so we need to work with objects copy
+					// fixed race condition by using mutex to protect concurrent access to shared objects
 					s.saveDataChan <- s.unSafeCopyOfStoredData()
 				}
 			}
