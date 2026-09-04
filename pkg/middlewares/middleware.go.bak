@@ -17,13 +17,3 @@ func GetLogger(ctx context.Context, middleware, middlewareType string) *zerolog.
 
 	return &logger
 }
-
-
-// shouldRetryContextKey is a context key used to store whether a retry should be attempted.
-// It is of empty struct type to avoid collisions with other context keys.
-type shouldRetryContextKey struct{}
-
-// StripRetryContext returns a copy of ctx with shouldRetryContextKey set to nil.
-func StripRetryContext(ctx context.Context) context.Context {
-	return context.WithValue(ctx, shouldRetryContextKey{}, nil)
-}
