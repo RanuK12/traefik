@@ -31,6 +31,13 @@ var _ middlewares.Stateful = &responseWriter{}
 
 const typeName = "Retry"
 
+type shouldRetryContextKey struct{}
+
+// StripRetryContext returns a copy of ctx with shouldRetryContextKey set to nil.
+func StripRetryContext(ctx context.Context) context.Context {
+	return context.WithValue(ctx, shouldRetryContextKey{}, nil)
+}
+
 // Listener is used to inform about retry attempts.
 type Listener interface {
 	// Retried will be called when a retry happens, with the request attempt passed to it.
